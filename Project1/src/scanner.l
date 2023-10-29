@@ -28,18 +28,28 @@ punc		[\(\),:;]
 {ws}		{ ECHO; }
 {comment}	{ ECHO; nextLine();}
 {line}		{ ECHO; nextLine();}
+"=>"	{ ECHO; return(ARROW); }
 "<"		{ ECHO; return(RELOP); }
 "+"		{ ECHO; return(ADDOP); }
 "*"		{ ECHO; return(MULOP); }
 begin		{ ECHO; return(BEGIN_); }
 boolean		{ ECHO; return(BOOLEAN); }
+case	{ ECHO; return(CASE); }
+else	{ ECHO; return(ELSE); }
 end		{ ECHO; return(END); }
+endcase		{ ECHO; return(ENDCASE); }
+endif		{ ECHO; return(ENDIF); }
 endreduce	{ ECHO; return(ENDREDUCE); }
 function	{ ECHO; return(FUNCTION); }
+if		{ ECHO; return(IF); }
 integer		{ ECHO; return(INTEGER); }
 is		{ ECHO; return(IS); }
+others		{ ECHO; return(OTHERS); }
+real		{ ECHO; return(REAL); }
 reduce		{ ECHO; return REDUCE; }
 returns		{ ECHO; return(RETURNS); }
+then	{ ECHO; return(THEN); }
+when	{ ECHO; return(WHEN); }
 and		{ ECHO; return(ANDOP); }
 {id}		{ ECHO; return(IDENTIFIER);}
 {int}		{ ECHO; return(INT_LITERAL); }
