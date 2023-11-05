@@ -12,4 +12,4 @@ listing.o: listing.cc listing.h
 	g++ -c listing.cc
 
 clean:
-	rm -f *.o compile scanner.c lexemes.txt
+	rm -f *.o compile scanner.c

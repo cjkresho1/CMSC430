@@ -19,7 +19,7 @@ using namespace std;
 ws		[ \t\r]+
 comment		[\-/]{2}.*\n
 line		[\n]
-id		[A-Za-z](_?[A-Za-z0-9]+_?)*[A-Za-z0-9]
+id		[A-Za-z](_?[A-Za-z0-9]+)*
 digit		[0-9]
 int		{digit}+
 double	{digit}+\.{digit}*([eE][+-]?{digit}+)?
