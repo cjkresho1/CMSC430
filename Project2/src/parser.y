@@ -56,7 +56,8 @@ statement_:
 	
 statement:
 	expression |
-	REDUCE operator reductions ENDREDUCE ;
+	REDUCE operator reductions ENDREDUCE |
+	IF expression THEN statement_ ELSE statement_ ENDIF ;
 
 operator:
 	ADDOP |
