@@ -1,3 +1,7 @@
 **/*.o
 **/compile
 **/scanner.c
+**/parser.output
+**/parser.tab.h
+**/Project2/src/parser.c
+**/Project2/src/tokens.h

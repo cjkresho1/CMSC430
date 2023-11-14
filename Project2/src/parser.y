@@ -18,10 +18,14 @@ void yyerror(const char* message);
 
 %token IDENTIFIER
 %token INT_LITERAL
+%token BOOL_LITERAL
+%token REAL_LITERAL
 
-%token ADDOP MULOP RELOP ANDOP
+%token ARROW
 
-%token BEGIN_ BOOLEAN END ENDREDUCE FUNCTION INTEGER IS REDUCE RETURNS
+%token RELOP ADDOP MULOP REMOP EXPOP ANDOP OROP NOTOP 
+
+%token BEGIN_ BOOLEAN CASE ELSE END ENDCASE ENDIF ENDREDUCE FUNCTION IF INTEGER IS OTHERS REAL REDUCE RETURNS THEN WHEN 
 
 %%
 
@@ -40,6 +44,7 @@ variable:
 
 type:
 	INTEGER |
+    REAL | 
 	BOOLEAN ;
 
 body:
@@ -79,7 +84,9 @@ factor:
 
 primary:
 	'(' expression ')' |
-	INT_LITERAL | 
+	INT_LITERAL |
+    REAL_LITERAL |
+    BOOL_LITERAL |
 	IDENTIFIER ;
     
 %%
