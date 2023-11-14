@@ -36,11 +36,12 @@ function_header:
 	FUNCTION IDENTIFIER RETURNS type ';' ;
 
 optional_variable:
-	variable |
+	variables |
 	;
 
-variable:
-	IDENTIFIER ':' type IS statement_ ;
+variables:
+	IDENTIFIER ':' type IS statement_ |
+	IDENTIFIER ':' type IS statement_ variables;
 
 type:
 	INTEGER |
