@@ -86,7 +86,11 @@ reductions:
 	;
 		    
 expression:
-	expression ANDOP relation |
+	expression OROP wedge |
+	wedge ;
+
+wedge:
+	wedge ANDOP relation |
 	relation ;
 
 relation:
@@ -98,8 +102,21 @@ term:
 	factor ;
       
 factor:
-	factor MULOP primary |
-	primary ;
+	factor MULOP exponent |
+    factor REMOP exponent |
+	exponent ;
+    
+exponent:
+    negation EXPOP exponent |
+    negation ;
+    
+negation:
+    negation_ |
+    primary ;
+
+negation_:
+	NOTOP primary |
+	NOTOP negation_ ;
 
 primary:
 	'(' expression ')' |
