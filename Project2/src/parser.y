@@ -33,15 +33,17 @@ function:
 	function_header optional_variable body ;
 	
 function_header:	
-	FUNCTION IDENTIFIER optional_parameters RETURNS type ';' ;
+	FUNCTION IDENTIFIER optional_parameters RETURNS type ';' |
+    error ';' ;
 
 optional_variable:
-	variables |
+    variables |
 	;
 
 variables:
 	IDENTIFIER ':' type IS statement_ |
-	IDENTIFIER ':' type IS statement_ variables;
+	IDENTIFIER ':' type IS statement_ variables |
+    error ';' ;
 
 optional_parameters:
 	parameters |
@@ -70,12 +72,13 @@ statement:
 	CASE expression IS optional_cases OTHERS ARROW statement_ ENDCASE;
 
 optional_cases:
-	cases |
+    cases |
 	;
 
 cases:
 	WHEN INT_LITERAL ARROW statement_ |
-	WHEN INT_LITERAL ARROW statement_ cases;
+	WHEN INT_LITERAL ARROW statement_ cases |
+    error ';' ;
 
 operator:
 	ADDOP |
