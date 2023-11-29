@@ -60,7 +60,12 @@ void appendError(ErrorCategories errorCategory, string message)
 
 	errorQueue.push(messages[errorCategory] + message);
 	totalErrors++;
-	lexicalErrors++;
+	if (errorCategory == 0) 
+		lexicalErrors++;
+	else if (errorCategory == 1)
+		syntaxErrors++;
+	else
+		semanticErrors++;
 }
 
 void displayErrors()
