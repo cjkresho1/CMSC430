@@ -1,4 +1,4 @@
--- Program containing the comment, modified identifer and new literals
+-- Program containing the comment, modified identifier and new literals
 
 // This is the new style comment
 
