@@ -1,8 +1,16 @@
 // Compiler Theory and Design
 // Dr. Duane J. Jarc
 
-// This file contains the bodies of the functions that produces the compilation
-// listing
+/**
+ * @file listing.cc
+ * @author Charles Kresho
+ * @brief Project 1
+ * @version 1.0
+ * @date 2023-12-10
+ *
+ * This file contains the bodies of the functions that produces the compilation listing.
+ *
+ */
 
 #include <cstdio>
 #include <string>
@@ -24,14 +32,14 @@ static void displayErrors();
 void firstLine()
 {
 	lineNumber = 1;
-	printf("\n%4d  ",lineNumber);
+	printf("\n%4d  ", lineNumber);
 }
 
 void nextLine()
 {
 	displayErrors();
 	lineNumber++;
-	printf("%4d  ",lineNumber);
+	printf("%4d  ", lineNumber);
 }
 
 int lastLine()
@@ -40,10 +48,12 @@ int lastLine()
 	displayErrors();
 	printf("     \n");
 
-	if (totalErrors == 0) {
+	if (totalErrors == 0)
+	{
 		printf("Compiled Successfully\n");
 	}
-	else {
+	else
+	{
 		printf("Lexical Errors %d\n", lexicalErrors);
 		printf("Syntax Errors %d\n", syntaxErrors);
 		printf("Semantic Errors %d\n", semanticErrors);
@@ -51,12 +61,12 @@ int lastLine()
 
 	return totalErrors;
 }
-    
+
 void appendError(ErrorCategories errorCategory, string message)
 {
-	string messages[] = { "Lexical Error, Invalid Character ", "",
-		"Semantic Error, ", "Semantic Error, Duplicate Identifier: ",
-		"Semantic Error, Undeclared " };
+	string messages[] = {"Lexical Error, Invalid Character ", "",
+						 "Semantic Error, ", "Semantic Error, Duplicate Identifier: ",
+						 "Semantic Error, Undeclared "};
 
 	errorQueue.push(messages[errorCategory] + message);
 	totalErrors++;
@@ -65,8 +75,9 @@ void appendError(ErrorCategories errorCategory, string message)
 
 void displayErrors()
 {
-	while (errorQueue.size() != 0) {
-			printf("%s\n", errorQueue.front().c_str());
-			errorQueue.pop();
+	while (errorQueue.size() != 0)
+	{
+		printf("%s\n", errorQueue.front().c_str());
+		errorQueue.pop();
 	}
 }
