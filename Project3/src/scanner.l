@@ -1,7 +1,13 @@
 /* Compiler Theory and Design
    Duane J. Jarc */
 
-/* This file contains flex input file */
+/* @file scanner.l
+ * @author Charles Kresho
+ * @brief Project 3
+ * @version 1.0
+ * @date 2023-12-11
+ *
+ * This file contains flex input file. */
 
 %{
 #include <string>

@@ -1,25 +1,37 @@
 // Compiler Theory and Design
 // Dr. Duane J. Jarc
 
+/**
+ * @file symbols.h
+ * @author Charles Kresho
+ * @brief Project 3
+ * @version 1.0
+ * @date 2023-12-11
+ *
+ * This file represents the paramater and variable library for the language
+ *
+ */
+
 template <typename T>
 class Symbols
 {
 public:
-	void insert(char* lexeme, T entry);
-	bool find(char* lexeme, T& entry);
+	void insert(char *lexeme, T entry);
+	bool find(char *lexeme, T &entry);
+
 private:
 	map<string, T> symbols;
 };
 
 template <typename T>
-void Symbols<T>::insert(char* lexeme, T entry)
+void Symbols<T>::insert(char *lexeme, T entry)
 {
 	string name(lexeme);
 	symbols[name] = entry;
 }
 
 template <typename T>
-bool Symbols<T>::find(char* lexeme, T& entry)
+bool Symbols<T>::find(char *lexeme, T &entry)
 {
 	string name(lexeme);
 	typedef typename map<string, T>::iterator Iterator;

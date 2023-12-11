@@ -1,7 +1,16 @@
 // CMSC 430
 // Duane J. Jarc
 
-// This file contains function definitions for the evaluation functions
+/**
+ * @file listing.cc
+ * @author Charles Kresho
+ * @brief Project 3
+ * @version 1.0
+ * @date 2023-12-11
+ *
+ * This file contains function definitions for the evaluation functions.
+ *
+ */
 
 typedef char *CharPtr;
 enum Operators

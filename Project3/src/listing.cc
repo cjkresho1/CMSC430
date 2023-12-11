@@ -1,8 +1,16 @@
 // Compiler Theory and Design
 // Dr. Duane J. Jarc
 
-// This file contains the bodies of the functions that produces the compilation
-// listing
+/**
+ * @file listing.cc
+ * @author Charles Kresho
+ * @brief Project 3
+ * @version 1.0
+ * @date 2023-12-11
+ *
+ * This file contains the bodies of the functions that produces the compilation listing.
+ *
+ */
 
 #include <cstdio>
 #include <string>

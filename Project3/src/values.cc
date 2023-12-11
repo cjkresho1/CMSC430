@@ -1,8 +1,16 @@
 // CMSC 430
 // Duane J. Jarc
 
-// This file contains the bodies of the evaluation functions
-
+/**
+ * @file values.cc
+ * @author Charles Kresho
+ * @brief Project 3
+ * @version 1.0
+ * @date 2023-12-11
+ *
+ * This file contains the bodies of the evaluation functions.
+ *
+ */
 #include <string>
 #include <vector>
 #include <cmath>
@@ -78,7 +86,7 @@ float evaluateArithmetic(float left, Operators operator_, float right)
 		result = powf(left, right);
 		break;
 	case REMAINDER:
-		result = (int) left % (int) right;
+		result = (int)left % (int)right;
 		break;
 	}
 	return result;

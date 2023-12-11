@@ -1,6 +1,13 @@
 /* Compiler Theory and Design
    Duane J. Jarc */
 
+/* @file parser.y
+ * @author Charles Kresho
+ * @brief Project 3
+ * @version 1.0
+ * @date 2023-12-11
+ *
+ * This file contains bison input file. */
 %{
 
 #include <iostream>
