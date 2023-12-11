@@ -21,6 +21,9 @@ Symbols<float> symbols;
 
 float result;
 
+float* params;
+int paramIndex = 0;
+
 %}
 
 %define parse.error verbose
@@ -44,8 +47,8 @@ float result;
 
 %token BEGIN_ BOOLEAN CASE ELSE END ENDCASE ENDIF ENDREDUCE FUNCTION IF INTEGER IS OTHERS REAL REDUCE RETURNS THEN WHEN 
 
-%type <value> body statement_ statement reductions expression relation term
-	factor primary
+%type <value> body statement_ statement reductions expression wedge relation term
+	factor exponent negation primary
 %type <oper> operator
 
 %%
@@ -54,14 +57,23 @@ function:
 	function_header optional_variable body {result = $3;} ;
 	
 function_header:	
-	FUNCTION IDENTIFIER RETURNS type ';' ;
+	FUNCTION IDENTIFIER optional_parameters RETURNS type ';' ;
 
 optional_variable:
-	variable |
+	variables |
 	;
 
-variable:	
+variables:	
+	variables IDENTIFIER ':' type IS statement_ {symbols.insert($2, $6);} | 
 	IDENTIFIER ':' type IS statement_ {symbols.insert($1, $5);} ;
+
+optional_parameters:
+	parameters |
+	parameters ',' optional_parameters |
+	;
+
+parameters:
+	IDENTIFIER ':' type {symbols.insert($1, params[paramIndex]); paramIndex++;};
 
 type:
 	INTEGER |
@@ -77,7 +89,8 @@ statement_:
 	
 statement:
 	expression |
-	REDUCE operator reductions ENDREDUCE {$$ = $3;} ;
+	REDUCE operator reductions ENDREDUCE {$$ = $3;} |
+	IF expression THEN statement_ ELSE statement_ ENDIF {$$ = $2 ? $4 : $6;};
 
 operator:
 	ADDOP |
@@ -88,7 +101,11 @@ reductions:
 	{$$ = $<oper>0 == ADD ? 0 : 1;} ;
 
 expression:
-	expression ANDOP relation {$$ = $1 && $3;} |
+	expression OROP wedge {$$ = $1 || $3;}|
+	wedge ;
+
+wedge:
+	wedge ANDOP relation {$$ = $1 && $3;}|
 	relation ;
 
 relation:
@@ -100,8 +117,17 @@ term:
 	factor ;
       
 factor:
-	factor MULOP primary {$$ = evaluateArithmetic($1, $2, $3);} |
-	primary ;
+	factor MULOP exponent {$$ = evaluateArithmetic($1, $2, $3);} |
+    factor REMOP exponent {$$ = evaluateArithmetic($1, $2, $3);} |
+	exponent ;
+
+exponent:
+    negation EXPOP exponent {$$ = evaluateArithmetic($1, $2, $3);} |
+    negation;
+
+negation: 
+	NOTOP primary {$$ = ! $2;} |
+	primary;
 
 primary:
 	'(' expression ')' {$$ = $2;} |
@@ -119,9 +145,17 @@ void yyerror(const char* message)
 
 int main(int argc, char *argv[])    
 {
+	params = (float *) malloc((argc - 1) * sizeof(float));
+	for (int i = 0; i < argc - 1; i++ ) 
+	{
+		params[i] = atof(argv[i + 1]);
+	}
+
 	firstLine();
 	yyparse();
 	if (lastLine() == 0)
 		cout << "Result = " << result << endl;
+	
+	free(params);
 	return 0;
 } 

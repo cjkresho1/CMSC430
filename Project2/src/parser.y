@@ -112,14 +112,10 @@ factor:
 exponent:
     negation EXPOP exponent |
     negation ;
-    
-negation:
-    negation_ |
-    primary ;
 
-negation_:
+negation:
 	NOTOP primary |
-	NOTOP negation_ ;
+	primary;
 
 primary:
 	'(' expression ')' |
