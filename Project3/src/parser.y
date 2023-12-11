@@ -17,9 +17,9 @@ using namespace std;
 int yylex();
 void yyerror(const char* message);
 
-Symbols<int> symbols;
+Symbols<float> symbols;
 
-int result;
+float result;
 
 %}
 
@@ -29,16 +29,20 @@ int result;
 {
 	CharPtr iden;
 	Operators oper;
-	int value;
+	float value;
 }
 
 %token <iden> IDENTIFIER
 %token <value> INT_LITERAL
+%token <value> BOOL_LITERAL
+%token <value> REAL_LITERAL
 
-%token <oper> ADDOP MULOP RELOP
-%token ANDOP
+%token ARROW
 
-%token BEGIN_ BOOLEAN END ENDREDUCE FUNCTION INTEGER IS REDUCE RETURNS
+%token <oper> RELOP ADDOP MULOP REMOP EXPOP
+%token ANDOP OROP NOTOP
+
+%token BEGIN_ BOOLEAN CASE ELSE END ENDCASE ENDIF ENDREDUCE FUNCTION IF INTEGER IS OTHERS REAL REDUCE RETURNS THEN WHEN 
 
 %type <value> body statement_ statement reductions expression relation term
 	factor primary
@@ -61,6 +65,7 @@ variable:
 
 type:
 	INTEGER |
+	REAL |
 	BOOLEAN ;
 
 body:
@@ -101,6 +106,8 @@ factor:
 primary:
 	'(' expression ')' {$$ = $2;} |
 	INT_LITERAL |
+    REAL_LITERAL |
+    BOOL_LITERAL |
 	IDENTIFIER {if (!symbols.find($1, $$)) appendError(UNDECLARED, $1);} ;
 
 %%

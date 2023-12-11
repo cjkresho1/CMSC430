@@ -12,7 +12,7 @@ using namespace std;
 #include "values.h"
 #include "listing.h"
 
-int evaluateReduction(Operators operator_, int head, int tail)
+float evaluateReduction(Operators operator_, float head, float tail)
 {
 	if (operator_ == ADD)
 		return head + tail;
@@ -20,9 +20,9 @@ int evaluateReduction(Operators operator_, int head, int tail)
 }
 
 
-int evaluateRelational(int left, Operators operator_, int right)
+float evaluateRelational(float left, Operators operator_, float right)
 {
-	int result;
+	float result;
 	switch (operator_)
 	{
 		case LESS:
@@ -32,9 +32,9 @@ int evaluateRelational(int left, Operators operator_, int right)
 	return result;
 }
 
-int evaluateArithmetic(int left, Operators operator_, int right)
+float evaluateArithmetic(float left, Operators operator_, float right)
 {
-	int result;
+	float result;
 	switch (operator_)
 	{
 		case ADD:

@@ -6,7 +6,7 @@
 typedef char* CharPtr;
 enum Operators {LESS, ADD, MULTIPLY};
 
-int evaluateReduction(Operators operator_, int head, int tail);
-int evaluateRelational(int left, Operators operator_, int right);
-int evaluateArithmetic(int left, Operators operator_, int right);
+float evaluateReduction(Operators operator_, float head, float tail);
+float evaluateRelational(float left, Operators operator_, float right);
+float evaluateArithmetic(float left, Operators operator_, float right);
 
