@@ -7,6 +7,7 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <cmath>
 
 using namespace std;
 
@@ -47,7 +48,7 @@ int paramIndex = 0;
 
 %token BEGIN_ BOOLEAN CASE ELSE END ENDCASE ENDIF ENDREDUCE FUNCTION IF INTEGER IS OTHERS REAL REDUCE RETURNS THEN WHEN 
 
-%type <value> body statement_ statement reductions expression wedge relation term
+%type <value> body statement_ statement optional_cases case reductions expression wedge relation term
 	factor exponent negation primary
 %type <oper> operator
 
@@ -90,7 +91,15 @@ statement_:
 statement:
 	expression |
 	REDUCE operator reductions ENDREDUCE {$$ = $3;} |
-	IF expression THEN statement_ ELSE statement_ ENDIF {$$ = $2 ? $4 : $6;};
+	IF expression THEN statement_ ELSE statement_ ENDIF {$$ = $2 ? $4 : $6;} |
+	CASE expression IS optional_cases OTHERS ARROW statement_ ENDCASE {$$ = isnan($4) ? $7 : $4;};
+
+optional_cases:
+    optional_cases case {$$ = isnan($1) ? $2 : $1;} |
+	{$$ = NAN;};
+
+case:
+	WHEN INT_LITERAL ARROW statement_ {$$ = ($<value>-2 == $2) ? $4 : NAN;};
 
 operator:
 	ADDOP |
