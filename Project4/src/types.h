@@ -1,12 +1,27 @@
 // Compiler Theory and Design
 // Duane J. Jarc
 
-// This file contains type definitions and the function
-// prototypes for the type checking functions
+/**
+ * @file types.h
+ * @author Charles Kresho
+ * @brief Project 4
+ * @version 1.0
+ * @date 2023-12-12
+ *
+ * This file contains type definitions and the function prototypes for the type checking functions.
+ *
+ */
 
-typedef char* CharPtr;
+typedef char *CharPtr;
 
-enum Types {MISMATCH, INT_TYPE, REAL_TYPE, BOOL_TYPE, NO_TYPE};
+enum Types
+{
+    MISMATCH,
+    INT_TYPE,
+    REAL_TYPE,
+    BOOL_TYPE,
+    NO_TYPE
+};
 
 void checkAssignment(Types lValue, Types rValue, string message);
 Types checkArithmetic(Types left, Types right);

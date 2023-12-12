@@ -1,7 +1,16 @@
 // Compiler Theory and Design
 // Duane J. Jarc
 
-// This file contains the bodies of the type checking functions
+/**
+ * @file types.cc
+ * @author Charles Kresho
+ * @brief Project 4
+ * @version 1.0
+ * @date 2023-12-12
+ *
+ * This file contains the bodies of the type checking functions.
+ *
+ */
 
 #include <string>
 #include <vector>
