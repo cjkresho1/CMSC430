@@ -21,3 +21,6 @@ listing.o: listing.cc listing.h
 
 types.o: types.cc types.h
 	g++ -c types.cc
+
+clean: 
+	rm -f *.o compile scanner.c tokens.h parser.output parser.tab.h

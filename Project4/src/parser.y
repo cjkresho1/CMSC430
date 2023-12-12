@@ -30,44 +30,65 @@ Symbols<Types> symbols;
 
 %token <iden> IDENTIFIER
 %token <type> INT_LITERAL
+%token <type> BOOL_LITERAL
+%token <type> REAL_LITERAL
 
-%token ADDOP MULOP RELOP ANDOP
-%token BEGIN_ BOOLEAN END ENDREDUCE FUNCTION INTEGER IS REDUCE RETURNS
+%token ARROW
 
-%type <type> type statement statement_ reductions expression relation term
-	factor primary
+%token RELOP ADDOP MULOP REMOP EXPOP ANDOP OROP NOTOP 
+%token BEGIN_ BOOLEAN CASE ELSE END ENDCASE ENDIF ENDREDUCE FUNCTION IF INTEGER IS OTHERS REAL REDUCE RETURNS THEN WHEN 
+
+%type <type> function_header type body statement statement_ reductions expression wedge relation term
+	factor exponent negation primary
 
 %%
 
 function:	
-	function_header optional_variable body ;
+	function_header optional_variable body {checkAssignment($1, $3, "Function Return");} ;
 	
 function_header:	
-	FUNCTION IDENTIFIER RETURNS type ';';
+	FUNCTION IDENTIFIER optional_parameters RETURNS type ';' {$$ = ($5);} ;
 
 optional_variable:
-	variable |
+	variables |
 	;
 
-variable:	
+variables:
+	variables IDENTIFIER ':' type IS statement_
+		{checkAssignment($4, $6, "Variable Initialization");
+		Types temp;
+		symbols.find($2, temp) ? appendError(DUPLICATE_IDENTIFIER, $2) : symbols.insert($2, $4);} |
 	IDENTIFIER ':' type IS statement_ 
 		{checkAssignment($3, $5, "Variable Initialization");
-		symbols.insert($1, $3);} ;
+		Types temp;
+		symbols.find($1, temp) ? appendError(DUPLICATE_IDENTIFIER, $1) : symbols.insert($1, $3);} ;
+
+optional_parameters:
+	parameters |
+	parameters ',' optional_parameters |
+	;
+
+parameters:
+	IDENTIFIER ':' type {Types temp;
+		symbols.find($1, temp) ? appendError(DUPLICATE_IDENTIFIER, $1) : symbols.insert($1, $3);} ;
 
 type:
 	INTEGER {$$ = INT_TYPE;} |
+	REAL {$$ = REAL_TYPE;} |
 	BOOLEAN {$$ = BOOL_TYPE;} ;
 
 body:
-	BEGIN_ statement_ END ';' ;
+	BEGIN_ statement_ END ';' {$$ = ($2);} ;
     
 statement_:
-	statement ';' |
+	statement ';' {$$ = $1;} |
 	error ';' {$$ = MISMATCH;} ;
 	
 statement:
 	expression |
-	REDUCE operator reductions ENDREDUCE {$$ = $3;} ;
+	REDUCE operator reductions ENDREDUCE {$$ = $3;} |
+	IF expression THEN statement_ ELSE statement_ ENDIF {$$ = checkIfExpression($2, $4, $6);} |
+	CASE expression IS optional_cases OTHERS ARROW statement_ ENDCASE ;
 
 operator:
 	ADDOP |
@@ -78,7 +99,11 @@ reductions:
 	{$$ = INT_TYPE;} ;
 		    
 expression:
-	expression ANDOP relation {$$ = checkLogical($1, $3);} |
+	expression OROP wedge {$$ = checkLogical($1, $3);} |
+	wedge ;
+		    
+wedge:
+	wedge ANDOP relation {$$ = checkLogical($1, $3);} |
 	relation ;
 
 relation:
@@ -90,12 +115,23 @@ term:
 	factor ;
       
 factor:
-	factor MULOP primary  {$$ = checkArithmetic($1, $3);} |
-	primary ;
+	factor MULOP exponent  {$$ = checkArithmetic($1, $3);} |
+	factor REMOP exponent {$$ = checkRemainder($1, $3);} |
+	exponent ;
+    
+exponent:
+    negation EXPOP exponent {$$ = checkArithmetic($1, $3);} |
+    negation ;
+
+negation:
+	NOTOP primary {$$ = checkLogical(BOOL_TYPE, $2);} |
+	primary;
 
 primary:
 	'(' expression ')' {$$ = $2;} |
 	INT_LITERAL |
+	REAL_LITERAL |
+	BOOL_LITERAL |
 	IDENTIFIER {if (!symbols.find($1, $$)) appendError(UNDECLARED, $1);} ;
     
 %%
