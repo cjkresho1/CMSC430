@@ -87,3 +87,25 @@ Types checkIfExpression(Types condition, Types first, Types second)
 	}
 	return first;
 }
+
+Types checkCaseTypes(Types left, Types right)
+{
+	if (left == MISMATCH || right == MISMATCH)
+	{
+		return MISMATCH;
+	}
+	if (left == NO_TYPE)
+	{
+		return right;
+	}
+	if (right == NO_TYPE)
+	{
+		return left;
+	}
+	if (left != right)
+	{
+		appendError(GENERAL_SEMANTIC, "Case Types Mismatch");
+		return MISMATCH;
+	}
+	return left;
+}

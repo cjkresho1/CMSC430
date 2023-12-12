@@ -38,7 +38,7 @@ Symbols<Types> symbols;
 %token RELOP ADDOP MULOP REMOP EXPOP ANDOP OROP NOTOP 
 %token BEGIN_ BOOLEAN CASE ELSE END ENDCASE ENDIF ENDREDUCE FUNCTION IF INTEGER IS OTHERS REAL REDUCE RETURNS THEN WHEN 
 
-%type <type> function_header type body statement statement_ reductions expression wedge relation term
+%type <type> function_header type body statement statement_ optional_cases case reductions expression wedge relation term
 	factor exponent negation primary
 
 %%
@@ -88,7 +88,16 @@ statement:
 	expression |
 	REDUCE operator reductions ENDREDUCE {$$ = $3;} |
 	IF expression THEN statement_ ELSE statement_ ENDIF {$$ = checkIfExpression($2, $4, $6);} |
-	CASE expression IS optional_cases OTHERS ARROW statement_ ENDCASE ;
+	CASE expression IS optional_cases OTHERS ARROW statement_ ENDCASE
+		{$$ = checkCaseTypes($4, $7); 
+		if ($2 != INT_TYPE) { appendError(GENERAL_SEMANTIC, "Case Expression Not Integer"); } };
+
+optional_cases:
+    optional_cases case {$$ = checkCaseTypes($1, $2);} |
+	{$$ = NO_TYPE; };
+
+case:
+	WHEN INT_LITERAL ARROW statement_ {$$ = $4;};
 
 operator:
 	ADDOP |
